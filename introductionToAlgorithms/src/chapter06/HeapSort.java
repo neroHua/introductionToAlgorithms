@@ -61,7 +61,7 @@ public class HeapSort {
 		int largest = parent;
 
 		// 在父子节点中查找最大值得下标
-		if (left <= end && heap[left] > parent) {
+		if (left <= end && heap[left] > heap[parent]) {
 			largest = left;
 		}
 		if (right <= end && heap[right] > heap[largest]) {
