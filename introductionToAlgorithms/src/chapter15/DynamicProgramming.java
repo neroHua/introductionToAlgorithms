@@ -217,6 +217,58 @@ public class DynamicProgramming {
 
 	}
 
+	/**
+	 * 
+	 * 关于矩阵乘法目前没有兴趣
+	 * 
+	 * @param args
+	 */
+	
+	/**
+	 * 关于动态规划解决问题的步骤，被放在了最上面
+	 * 
+	 * @param args
+	 */
+	
+	/**
+	 * 
+	 * 关于DNA的最长的共同子序列
+	 * 在子问题构成原问题的时候不够严密，仅当个别情况适用
+	 * 该书再后面的章节中还会有相关的论述，届时再写
+	 * 
+	 * @param args
+	 */
+	
+	/**
+	 * 
+	 * 关于最优子结构搜索二叉树
+	 * 输入：值为{K0_P0,K1_P1,K2_P2,****Ki_Pi*****,Kn-1_Pn-1},其中ki代表值且逐渐增加，Pi代表统计概率,共n个元素
+	 * 输出：将以上n个元素，组成一个最优搜索二叉树，且要求所有元素的被搜索的期望值的总和最小
+	 * 设：F(start,end)为把Kstart到Kend共计n个元素，为最优搜索二叉树
+	 * 设：f(start,root,end)为在Kstart到Kstart+n-1共计n个元素中，选取start+root处的元素为根节点时，最优搜索二叉树的期望值
+	 * F(start,end)=Min(f(start,start+0,end),f(start,start+1,end),f(start,start+2,end),******,f(start,end,end))
+	 * f(start,root,end)=F(start,root-1) + F(root+1,end)
+	 * 
+	 * @param args
+	 */
+	
+	/**
+	 * 
+	 * directed acyclic graph中的最长路径问题
+	 * 这里仅考虑，点给定，点与点的连接以及方向给定，终点给定，且没有环路的情况
+	 * 这里选定F(终点)=Max(F(直接指向终点的点C)+C到终点的距离)
+	 * 
+	 * @param args
+	 */
+	
+	/**
+	 * 
+	 * 最大回文串问题(回文串是指这个字符串无论从左读还是从右读，所读的顺序是一样的)
+	 * 
+	 * 
+	 * @param args
+	 */
+	
 	public static void main(String[] args) {
 
 		DynamicProgramming dynamicProgramming = new DynamicProgramming();
