@@ -1,5 +1,7 @@
 package chapter15;
 
+import java.util.ArrayList;
+
 /**
  * 
  * 动态规划
@@ -30,6 +32,9 @@ public class DynamicProgramming {
 	int[] rodCutPrice = { 1, 5, 8, 10, 13, 17, 18, 22, 25, 30 };
 	int[][][] rodCutMatrix = null;
 
+	ArrayList<Integer>[][] palindromeMatrix = null;
+	
+	
 	/**
 	 * 
 	 * 切管子问题 现在有一根长度为n的管子，我们需要把管子切成若干段，以获取管子的最大价值
@@ -57,6 +62,8 @@ public class DynamicProgramming {
 	 * p(12) = 0
 	 * …… 
 	 * 算法的复杂度n*10^n
+	 * 
+	 * 注意对于同一最大值，管子的分法有可能会有不同的情况，这里仅取其中一种
 	 * 
 	 * @param length
 	 *            管子的总长度
@@ -131,6 +138,8 @@ public class DynamicProgramming {
 	 * 此时如果我们运用动态规划的思想：把f(0,b)和f(a-1,n-b)存储起来，而后在计算f(a,n)的时候直接拿出来用就可以了
 	 * 此时我们可以把递归的深度降低到2，因此也就减低了时间上的复杂度
 	 * 算法的复杂度n*n(n*n个解)
+	 * 
+	 * 注意对于同一最大值，管子的分法有可能会有不同的情况，这里仅取其中一种
 	 * 
 	 * @param length
 	 *           管子的总长度
@@ -219,12 +228,6 @@ public class DynamicProgramming {
 
 	/**
 	 * 
-	 * 关于矩阵乘法目前没有兴趣
-	 * 
-	 * @param args
-	 */
-	
-	/**
 	 * 关于动态规划解决问题的步骤，被放在了最上面
 	 * 
 	 * @param args
@@ -248,26 +251,127 @@ public class DynamicProgramming {
 	 * 设：f(start,root,end)为在Kstart到Kstart+n-1共计n个元素中，选取start+root处的元素为根节点时，最优搜索二叉树的期望值
 	 * F(start,end)=Min(f(start,start+0,end),f(start,start+1,end),f(start,start+2,end),******,f(start,end,end))
 	 * f(start,root,end)=F(start,root-1) + F(root+1,end)
+	 * 这是一个比较浩瀚的工程问题,我暂时没有实现它的打算
 	 * 
 	 * @param args
 	 */
 	
 	/**
 	 * 
-	 * directed acyclic graph中的最长路径问题
-	 * 这里仅考虑，点给定，点与点的连接以及方向给定，终点给定，且没有环路的情况
-	 * 这里选定F(终点)=Max(F(直接指向终点的点C)+C到终点的距离)
+	 * 最大回文串问题
+	 * 在给定字符串A中找到最长的回文字符串，回文串是指这个字符串无论从左读还是从右读，所读的顺序是一样的
+	 * 设F(start,end)为找出从start到end之间的最长的回文字符串
+	 * F(start,end)可以被分解为以下几种子问题
+	 * F(start,end)=A[start,end],当A[start]==A[end],且F(start+1,end-1)=A[start+1,end-1]
+	 * F(start,end)=Max(F(start+1,end),F(start,end-1))
+	 * 算法的复杂度为n*n(从解的空间来看)
+	 * 
+	 * 注意F(start,end)有多解时，需要把多个解都返回
 	 * 
 	 * @param args
 	 */
-	
-	/**
-	 * 
-	 * 最大回文串问题(回文串是指这个字符串无论从左读还是从右读，所读的顺序是一样的)
-	 * 
-	 * 
-	 * @param args
-	 */
+	@SuppressWarnings("unchecked")
+	public ArrayList<Integer> palindrome(String s) {
+
+		// 初始化解空间
+		palindromeMatrix = new ArrayList[s.length()][s.length()];
+		for (int i = 0; i < s.length(); i++) {
+			for (int j = 0; j < s.length(); j++) {
+				palindromeMatrix[i][j] = new ArrayList<Integer>();
+				palindromeMatrix[i][j].add(-1);
+			}
+		}
+
+		// 递归求解
+		return subPalindrome(s, 0, s.length() - 1);
+
+	}
+
+	public ArrayList<Integer> subPalindrome(String s, int start, int end) {
+
+		// 是否已经计算过
+		if (palindromeMatrix[start][end].get(0) != -1) {
+			return palindromeMatrix[start][end];
+		}
+
+		// 递归结束条件
+		if (start == end) {
+			palindromeMatrix[start][end].set(0, 1);
+			palindromeMatrix[start][end].add(1);
+			palindromeMatrix[start][end].add(start);
+			palindromeMatrix[start][end].add(end);
+			return palindromeMatrix[start][end];
+		}
+
+		// 当A[start]==A[end],且F(start+1,end-1)=A[start+1,end-1]
+		if (s.charAt(start) == s.charAt(end)) {
+
+			if (start == end - 1) {
+				palindromeMatrix[start][end].set(0, 1);
+				palindromeMatrix[start][end].add(2);
+				palindromeMatrix[start][end].add(start);
+				palindromeMatrix[start][end].add(end);
+				return palindromeMatrix[start][end];
+			}
+
+			// F(start+1,end-1)
+			if (palindromeMatrix[start + 1][end - 1].get(0) == -1) {
+				subPalindrome(s, start + 1, end - 1);
+			}
+
+			if (palindromeMatrix[start + 1][end - 1].get(0) == 1) {
+				if (palindromeMatrix[start + 1][end - 1].get(1) == end - start - 1) {
+					palindromeMatrix[start][end].set(0, 1);
+					palindromeMatrix[start][end].add(end - start + 1);
+					palindromeMatrix[start][end].add(start);
+					palindromeMatrix[start][end].add(end);
+					return palindromeMatrix[start][end];
+				}
+			}
+
+		}
+
+		// 当A[start]!=A[end]
+		// F(start+1,end)
+		if (palindromeMatrix[start + 1][end].get(0) == -1) {
+			subPalindrome(s, start + 1, end);
+		}
+		// F(start,end-1)
+		if (palindromeMatrix[start][end - 1].get(0) == -1) {
+			subPalindrome(s, start, end - 1);
+		}
+
+		// 根据F(start+1,end)和F(start,end-1)处理F(start,end)
+		if (palindromeMatrix[start + 1][end].get(1) > palindromeMatrix[start][end - 1].get(1)) {
+
+			palindromeMatrix[start][end].set(0, palindromeMatrix[start + 1][end].get(0));
+			for (int i = 1; i < palindromeMatrix[start + 1][end].size(); i++) {
+				palindromeMatrix[start][end].add(palindromeMatrix[start + 1][end].get(i));
+			}
+			return palindromeMatrix[start][end];
+
+		} else if (palindromeMatrix[start + 1][end].get(1) == palindromeMatrix[start][end - 1].get(1)) {
+
+			palindromeMatrix[start][end].set(0,palindromeMatrix[start + 1][end].get(0) + palindromeMatrix[start][end - 1].get(0));
+			for (int i = 1; i < palindromeMatrix[start + 1][end].size(); i++) {
+				palindromeMatrix[start][end].add(palindromeMatrix[start + 1][end].get(i));
+			}
+			for (int i = 2; i < palindromeMatrix[start][end - 1].size(); i++) {
+				palindromeMatrix[start][end].add(palindromeMatrix[start][end - 1].get(i));
+			}
+			return palindromeMatrix[start][end];
+
+		} else {
+
+			palindromeMatrix[start][end].set(0, palindromeMatrix[start][end - 1].get(0));
+			for (int i = 1; i < palindromeMatrix[start][end - 1].size(); i++) {
+				palindromeMatrix[start][end].add(palindromeMatrix[start][end - 1].get(i));
+			}
+			return palindromeMatrix[start][end];
+
+		}
+
+	}
 	
 	public static void main(String[] args) {
 
@@ -275,11 +379,15 @@ public class DynamicProgramming {
 
 		// System.out.println(dynamicProgramming.rodCut1(11));
 
-		int[] cutResult = dynamicProgramming.rodCut2(11);
+		/*int[] cutResult = dynamicProgramming.rodCut2(11);
 		for (int i : cutResult) {
 			System.out.print(i + "\t");
-		}
+		}*/
 
+		ArrayList<Integer> list = dynamicProgramming.palindrome("abacdaba");
+		System.out.println(list.get(0));
+		System.out.println(list.get(1));
+		
 	}
 
 }
