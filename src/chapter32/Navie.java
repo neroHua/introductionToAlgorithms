@@ -16,6 +16,7 @@ import java.util.Arrays;
  *  否者 i++
  * 
  * 算法的复杂度：为n * m
+ * 当P中没有重复的字符时，算法的复杂度可以为：n
  * 
  * 
  * @author 滑德友
