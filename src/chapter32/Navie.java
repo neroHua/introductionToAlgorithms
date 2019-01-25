@@ -26,10 +26,10 @@ import java.util.Arrays;
 public class Navie {
 
     public int[] matchFromLeftToRight(char[] t, char[] p) {
-
         int[] result = new int[t.length];
 
         for (int i = 0; i < t.length; i++) {
+            // 顺序比较T[i + 1, i + m]和P[1, m]
             int j = 0;
             for (; j < p.length; j++) {
                 if (t[i + j] != p[j]) {
@@ -43,14 +43,13 @@ public class Navie {
         }
 
         return result;
-
     }
 
     public int[] matchFromRightToLeft(char[] t, char[] p) {
-
         int[] result = new int[t.length];
 
         for (int i = t.length - 1; i >= 0; i--) {
+            // 顺序比较T[i + 1, i + m]和P[1, m]
             int j = p.length - 1;
             for (; j >= 0; j--) {
                 if (t[i + j - p.length + 1] != p[j]) {
@@ -64,7 +63,6 @@ public class Navie {
         }
 
         return result;
-
     }
 
     public static void main(String[] args) {
@@ -78,7 +76,6 @@ public class Navie {
 
         int[] matchFromRightToLeft = navie.matchFromRightToLeft(t, p);
         System.out.println(Arrays.toString(matchFromRightToLeft));
-
     }
 
 }

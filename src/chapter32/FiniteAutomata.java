@@ -35,14 +35,14 @@ package chapter32;
 public class FiniteAutomata {
 
     public int[] match(char[] t, char[] p, char[] alphabet) {
-        int[][] stateTransitionDiagram = preProcessor(p, alphabet);
+        int[][] stateTransitionDiagram = prepare(p, alphabet);
         
         int[] result = new int[t.length];
         int q = 0;
         
         for (int i = 0; i < t.length; i++) {
             
-            q = stateTransition(q + 1, t[i], stateTransitionDiagram);
+            q = stateTransition(q + 1, t[i], stateTransitionDiagram, alphabet);
             
             if (q == p.length - 1) {
                 result[i] = 1;
@@ -52,7 +52,7 @@ public class FiniteAutomata {
         return result;
     }
 
-    private int[][] preProcessor(char[] p,  char[] alphabet) {
+    private int[][] prepare(char[] p,  char[] alphabet) {
         int[][] stateTransitionDiagram = new int[p.length + 1][alphabet.length];
         
         for (int i = 0; i <= p.length; i++) {
@@ -62,6 +62,7 @@ public class FiniteAutomata {
                 int max = i <= p.length - 1 ? i : p.length - 1;
                 for (; max >= 0; max--) {
                     
+                    // max == 0 时，需要特殊处理
                     if (max == 0) {
                         if (p[max] == alphabet[j]) {
                             break;
@@ -82,6 +83,7 @@ public class FiniteAutomata {
                         break;
                     }
                 }
+                
                 stateTransitionDiagram[i][j] = max;
             }
         }
@@ -89,20 +91,15 @@ public class FiniteAutomata {
         return stateTransitionDiagram;
     }
 
-    private int stateTransition(int q, char c, int[][] stateTransitionDiagram) {
-        if (c == 'a') {
-            return stateTransitionDiagram[q][0];
+    private int stateTransition(int q, char c, int[][] stateTransitionDiagram, char[] alphabet) {
+        // 找到该字母所在字母表中的下标
+        for (int i = 0; i < alphabet.length; i++) {
+            if (c == alphabet[i]) {
+                return stateTransitionDiagram[q][i];
+            }
         }
         
-        if (c == 'b') {
-            return stateTransitionDiagram[q][1];
-        }
-        
-        if (c == 'c') {
-            return stateTransitionDiagram[q][2];
-        }
-        
-        return stateTransitionDiagram[q][c];
+        throw new IllegalArgumentException("不再字母表中的字符");
     }
     
     public static void main(String[] args) {
