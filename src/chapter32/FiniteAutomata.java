@@ -1,5 +1,7 @@
 package chapter32;
 
+import java.util.Arrays;
+
 /**
  * 
  * 字符串匹配算法
@@ -38,15 +40,13 @@ public class FiniteAutomata {
         int[][] stateTransitionDiagram = prepare(p, alphabet);
         
         int[] result = new int[t.length];
-        int q = 0;
+        int previousState = 0;
         
         for (int i = 0; i < t.length; i++) {
             
-            q = stateTransition(q + 1, t[i], stateTransitionDiagram, alphabet);
+            previousState = stateTransition(previousState + 1, t[i], stateTransitionDiagram, alphabet);
             
-            if (q == p.length - 1) {
-                result[i] = 1;
-            }
+            result[i] = previousState;
         }
         
         return result;
@@ -88,6 +88,7 @@ public class FiniteAutomata {
             }
         }
         
+        // stateTransitionDiagram = -1 为初始状态， stateTransitionDiagram = P.length - 1 为初始状态
         return stateTransitionDiagram;
     }
 
@@ -110,8 +111,7 @@ public class FiniteAutomata {
         FiniteAutomata finiteAutomata = new FiniteAutomata();
         
         int[] result= finiteAutomata.match(t, p, alphabet);
-        System.out.println(result);
-
+        System.out.println(Arrays.toString(result));
     }
 
 }

@@ -1,5 +1,7 @@
 package chapter32;
 
+import java.util.Arrays;
+
 /**
  * 
  * 字符串匹配算法
@@ -43,96 +45,82 @@ package chapter32;
  * fst(i) = 0, 当 fet(i - 1) = 空集
  *        = fet(i - 1) + 1, 当fet(i - 1) ！= 空集
  *
- * 
  * ff:T[i]时永动机的状态
- *     ff(i) = ff(i - 1) + 1, 当 P[i] = T[i]
  *     ff(i) = max(k) + 1, k 满足 属于 D = fst*(ff(i - 1)) != 空集, P[k + 1] = T[i]
  *     ff(i) = 0, D = 空集
- * 
+ *     ff(i) = fst*(Q.lenght - 1), 当 ff(i) = Q.lenght - 1, 这里是为了保证永动机一直转下去 
+ *
+ *     大致证明思路如下：
+ *     因为：T[i - 1 - ff(i - 1) ~ i - 1] =  P[0 ~ ff(i -1)]
+ *     可以分T[i] = P[ff(i - 1) + 1] 和 T[i] != P[ff(i - 1) + 1]时, 类比fst(i)和fet(i -1)关系的证明过程
+ *
  * @author 滑德友
  * @time 2019年1月28日19:04:44
  *
  */
 public class KMP {
 
-    public int[] match(char[] t, char[] p, char[] alphabet) {
-        int[][] stateTransitionDiagram = prepare(p, alphabet);
+    public int[] match(char[] t, char[] p) {
+        int[] stateTransitionDiagram = prepare(p);
         
         int[] result = new int[t.length];
-        int q = 0;
+        int previousState = -1;
         
         for (int i = 0; i < t.length; i++) {
-            
-            q = stateTransition(q + 1, t[i], stateTransitionDiagram, alphabet);
-            
-            if (q == p.length - 1) {
-                result[i] = 1;
-            }
+            while (previousState > -1 && p[previousState + 1] != t[i]) {
+			    previousState = stateTransitionDiagram[previousState];
+			}
+
+			if (previousState == -1 && p[previousState + 1] != t[i]) {
+			    previousState = 0;
+			} else if (previousState == -1 && p[previousState + 1] == t[i]) {
+				previousState = 0;
+			}  else {
+			    previousState++;
+			    
+			}
+			result[i] = previousState;
+			
+			if (previousState == p.length - 1) {
+			    previousState = stateTransitionDiagram[previousState];
+			}
         }
         
         return result;
     }
 
-    private int[][] prepare(char[] p,  char[] alphabet) {
-        int[][] stateTransitionDiagram = new int[p.length + 1][alphabet.length];
-        
-        for (int i = 0; i <= p.length; i++) {
-            for (int j = 0; j < alphabet.length; j++) {
-                
-                // 求取：ft(ff(T[i - 1], T[i]) = sf(P[0 ~ j - 1] + T[i])
-                int max = i <= p.length - 1 ? i : p.length - 1;
-                for (; max >= 0; max--) {
-                    
-                    // max == 0 时，需要特殊处理
-                    if (max == 0) {
-                        if (p[max] == alphabet[j]) {
-                            break;
-                        } else {
-                            max--;
-                            break;
-                        }
-                    }
-                    
-                    int r = 0;
-                    for (; r < max; r++) {
-                        if (p[i - max + r] != p[r]) {
-                            break;
-                        }
-                    }
-                    
-                    if (r == max && p[max] == alphabet[j]) {
-                        break;
-                    }
-                }
-                
-                stateTransitionDiagram[i][j] = max;
-            }
-        }
-        
+    private int[] prepare(char[] p) {
+        int[] stateTransitionDiagram = new int[p.length];
+		stateTransitionDiagram[0] = -1;
+		int previousState = -1;
+
+        for (int i = 1; i < p.length; i++) {
+			while (previousState > -1 && p[previousState + 1] != p[i]) {
+				previousState = stateTransitionDiagram[previousState];
+			}
+
+			if (previousState == -1 && p[previousState + 1] != p[i]) {
+			    stateTransitionDiagram[i] = previousState;
+			} else if (previousState == -1 && p[previousState + 1] == p[i]) {
+				previousState = 0;
+			    stateTransitionDiagram[i] = 0;
+			}else {
+			    previousState++;
+			    stateTransitionDiagram[i] = previousState;
+			}
+		}
+
         return stateTransitionDiagram;
     }
 
-    private int stateTransition(int q, char c, int[][] stateTransitionDiagram, char[] alphabet) {
-        // 找到该字母所在字母表中的下标
-        for (int i = 0; i < alphabet.length; i++) {
-            if (c == alphabet[i]) {
-                return stateTransitionDiagram[q][i];
-            }
-        }
-        
-        throw new IllegalArgumentException("不再字母表中的字符");
-    }
-    
     public static void main(String[] args) {
-        char[] alphabet = {'a', 'b', 'c'};
         char[] p = {'a', 'b', 'a', 'b', 'a', 'c', 'a'};
         char[] t = {'a', 'b', 'a', 'b', 'a', 'c', 'a', 'a', 'b', 'a', 'b', 'a', 'c', 'a'};
         
-        KMP finiteAutomata = new KMP();
+        KMP kmp = new KMP();
         
-        int[] result= finiteAutomata.match(t, p, alphabet);
-        System.out.println(result);
-
+        int[] result= kmp.match(t, p);
+        System.out.println(Arrays.toString(result));
     }
 
 }
