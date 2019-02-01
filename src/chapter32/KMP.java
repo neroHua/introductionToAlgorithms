@@ -62,64 +62,64 @@ public class KMP {
 
     public int[] match(char[] t, char[] p) {
         int[] stateTransitionDiagram = prepare(p);
-        
+
         int[] result = new int[t.length];
         int previousState = -1;
-        
+
         for (int i = 0; i < t.length; i++) {
             while (previousState > -1 && p[previousState + 1] != t[i]) {
-			    previousState = stateTransitionDiagram[previousState];
-			}
+                previousState = stateTransitionDiagram[previousState];
+            }
 
-			if (previousState == -1 && p[previousState + 1] != t[i]) {
-			    previousState = 0;
-			} else if (previousState == -1 && p[previousState + 1] == t[i]) {
-				previousState = 0;
-			}  else {
-			    previousState++;
-			    
-			}
-			result[i] = previousState;
-			
-			if (previousState == p.length - 1) {
-			    previousState = stateTransitionDiagram[previousState];
-			}
+            if (previousState == -1 && p[previousState + 1] != t[i]) {
+                previousState = 0;
+            } else if (previousState == -1 && p[previousState + 1] == t[i]) {
+                previousState = 0;
+            } else {
+                previousState++;
+
+            }
+            result[i] = previousState;
+
+            if (previousState == p.length - 1) {
+                previousState = stateTransitionDiagram[previousState];
+            }
         }
-        
+
         return result;
     }
 
     private int[] prepare(char[] p) {
         int[] stateTransitionDiagram = new int[p.length];
-		stateTransitionDiagram[0] = -1;
-		int previousState = -1;
+        stateTransitionDiagram[0] = -1;
+        int previousState = -1;
 
         for (int i = 1; i < p.length; i++) {
-			while (previousState > -1 && p[previousState + 1] != p[i]) {
-				previousState = stateTransitionDiagram[previousState];
-			}
+            while (previousState > -1 && p[previousState + 1] != p[i]) {
+                previousState = stateTransitionDiagram[previousState];
+            }
 
-			if (previousState == -1 && p[previousState + 1] != p[i]) {
-			    stateTransitionDiagram[i] = previousState;
-			} else if (previousState == -1 && p[previousState + 1] == p[i]) {
-				previousState = 0;
-			    stateTransitionDiagram[i] = 0;
-			}else {
-			    previousState++;
-			    stateTransitionDiagram[i] = previousState;
-			}
-		}
+            if (previousState == -1 && p[previousState + 1] != p[i]) {
+                stateTransitionDiagram[i] = previousState;
+            } else if (previousState == -1 && p[previousState + 1] == p[i]) {
+                previousState = 0;
+                stateTransitionDiagram[i] = 0;
+            } else {
+                previousState++;
+                stateTransitionDiagram[i] = previousState;
+            }
+        }
 
         return stateTransitionDiagram;
     }
 
     public static void main(String[] args) {
-        char[] p = {'a', 'b', 'a', 'b', 'a', 'c', 'a'};
-        char[] t = {'a', 'b', 'a', 'b', 'a', 'c', 'a', 'a', 'b', 'a', 'b', 'a', 'c', 'a'};
-        
+        char[] p = { 'a', 'b', 'a', 'b', 'a', 'c', 'a' };
+        char[] t = { 'a', 'b', 'a', 'b', 'a', 'c', 'a', 'a', 'b', 'a', 'b', 'a', 'c', 'a' };
+
         KMP kmp = new KMP();
-        
-        int[] result= kmp.match(t, p);
+
+        int[] result = kmp.match(t, p);
         System.out.println(Arrays.toString(result));
     }
 
