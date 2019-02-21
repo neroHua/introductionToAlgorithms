@@ -69,76 +69,77 @@ public class EightQueen {
     //         }
     //     }
     // }
-    //需要一个存储本行已摆放过得的位置的数组a[0,0,0,0......0,0,0]
-    //需要一个存储已经摆放好的皇后的位置的数组b[]
-    //需要一个根据已经摆放好的皇后的位置的判定当前位置能不能放置皇后方法，并返回一个布尔行得数据
-    //结束条件是A[0]=N(皇后的个数)
-    int a[]={0,0,0,0,0,0,0,0};//本行已摆放过得的位置的数组
-    int b[]={0,0,0,0,0,0,0,0};//摆放好的皇后的位置的数组
-    int count=0;
-    int c[][]=new int[100][100];
-    public void answer(int x,int y,int N){//x代表行，y代表列，N代表皇后的个数
-        if(a[0]==N){
+    // 需要一个存储本行已摆放过得的位置的数组a[0,0,0,0......0,0,0]
+    // 需要一个存储已经摆放好的皇后的位置的数组b[]
+    // 需要一个根据已经摆放好的皇后的位置的判定当前位置能不能放置皇后方法，并返回一个布尔行得数据
+    // 结束条件是A[0]=N(皇后的个数)
+    int a[] = { 0, 0, 0, 0, 0, 0, 0, 0 };// 本行已摆放过得的位置的数组
+    int b[] = { 0, 0, 0, 0, 0, 0, 0, 0 };// 摆放好的皇后的位置的数组
+    int count = 0;
+    int c[][] = new int[100][100];
+
+    public void answer(int x, int y, int N) {// x代表行，y代表列，N代表皇后的个数
+        if (a[0] == N) {
             System.out.println("已经查找完毕！");
-        }else{
-            if(x==N-1){//最后一行吗？
-                if(a[x]!=N){
-                    if(judge(x,a[x])){
-                        b[x]=a[x];
+        } else {
+            if (x == N - 1) {// 最后一行吗？
+                if (a[x] != N) {
+                    if (judge(x, a[x])) {
+                        b[x] = a[x];
                         count++;
-                        System.out.print("第"+count+"个解：");
+                        System.out.print("第" + count + "个解：");
                         System.out.println(Arrays.toString(b));
                         a[x]++;
-                        answer(x,a[x],N);
-                    }else{
+                        answer(x, a[x], N);
+                    } else {
                         a[x]++;
-                        answer(x,a[x],N);
+                        answer(x, a[x], N);
                     }
-                }else{
-                    a[x]=0;
-                    a[x-1]++;
-                    answer(x-1,a[x-1],N);
+                } else {
+                    a[x] = 0;
+                    a[x - 1]++;
+                    answer(x - 1, a[x - 1], N);
                 }
-            }else{
-                if(a[x]!=N){
-                    if(judge(x,a[x])){
-                        b[x]=a[x];
-                        a[x+1]=0;
-                        answer(x+1,a[x+1],N);
-                    }else{
+            } else {
+                if (a[x] != N) {
+                    if (judge(x, a[x])) {
+                        b[x] = a[x];
+                        a[x + 1] = 0;
+                        answer(x + 1, a[x + 1], N);
+                    } else {
                         a[x]++;
-                        answer(x,a[x],N);
+                        answer(x, a[x], N);
                     }
-                }else{
-                    if(x!=0){
-                        a[x]=0;
-                        b[x]=0;
-                        a[x-1]++;
-                        answer(x-1,a[x-1],N);    
-                    }else{
+                } else {
+                    if (x != 0) {
+                        a[x] = 0;
+                        b[x] = 0;
+                        a[x - 1]++;
+                        answer(x - 1, a[x - 1], N);
+                    } else {
                         System.out.println("已经查找完毕！");
                     }
                 }
             }
         }
     }
-    
-    public boolean judge(int x,int y){
+
+    public boolean judge(int x, int y) {
         // 从0到x-1行找到存储在a[x]中的皇后的位置，然后根据皇后的位置，判定当前位置是否可以分放置皇后
         // 当当前位置，与其他已经摆放好的皇后没有在一条45°斜线和同一行和同一列的时候就可以在当前位置摆放皇后
-        boolean condition=true;
-        for(int i=0;i<x;i++){
-            if(y==a[i]||y==(a[i]+(x-i))||y==(a[i]-(x-i))){// 判定是否和a[i]同行||判定是否在a[i]的上方的45°||判定是否在a[i]的下方的45°
-                condition=false;
+        boolean condition = true;
+        for (int i = 0; i < x; i++) {
+            if (y == a[i] || y == (a[i] + (x - i)) || y == (a[i] - (x - i))) {// 判定是否和a[i]同行||判定是否在a[i]的上方的45°||判定是否在a[i]的下方的45°
+                condition = false;
                 break;
             }
         }
         return condition;
     }
-    
+
     public static void main(String[] args) {
         EightQueen test = new EightQueen();
-        test.answer(0,0,7);
+        test.answer(0, 0, 7);
         System.out.println(test.count);
     }
     
