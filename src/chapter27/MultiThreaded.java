@@ -29,7 +29,8 @@ package chapter27;
  */
 public class MultiThreaded {
 
-	public static void main(String[] args) {
+	@SuppressWarnings("static-access")
+    public static void main(String[] args) {
 
 		// 初始化静态常量
 		FibonacciThread.fn = new int[10];
