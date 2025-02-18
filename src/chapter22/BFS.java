@@ -128,9 +128,31 @@ public class BFS {
         System.out.println("-----------------------------------------------------");
     }
 
+    private static void printAllPath(Vertex[] graph, Vertex s) {
+        for (int i = 0; i < graph.length; i++) {
+            printPath(graph, s, graph[i]);
+            System.out.println();
+        }
+    }
+
+    private static void printPath(Vertex[] graph, Vertex s, Vertex v) {
+        if (v == s) {
+            System.out.print(s.name);
+        }
+        else if (v.predecessor == null) {
+            System.out.println("no path from " + s.name + " to " + v.name);
+        }
+        else {
+            printPath(graph, s, v.predecessor);
+            System.out.print(v.name);;
+        }
+    }
+
     public static void main(String[] args) {
         Vertex[] graph = buildGraph();
 
         BFS(graph, graph[1]);
+
+        printAllPath(graph, graph[1]);
     }
 }
