@@ -1,4 +1,4 @@
-﻿package chapter15;
+package chapter15;
 
 import java.util.Arrays;
 
@@ -12,10 +12,10 @@ import java.util.Arrays;
  * 以下是滑德友提供的算法    该算法由滑德友历时1天左右完成
  * 由于算法效率比较低，对硬件的依赖性比较强，在皇后数量在1-7的时候都能得到正确的解
  * 而在皇后数量等于8的时候由于硬件关系不足以一次性得到所有的解
- * 
+ *
  * @author 滑德友
  * @time 2019年2月15日18:16:36
- * 
+ *
  */
 public class EightQueen {
 
@@ -48,7 +48,7 @@ public class EightQueen {
     //     }else{
     //         本行已摆放的的位置的个数++；
     //         f(x)
-    //     }        
+    //     }
     //  }else{
     //         返回前一行同时，本行可以摆放的位置的个数设为0，前一行已摆放的位置的个数++
     //     }
@@ -142,5 +142,5 @@ public class EightQueen {
         test.answer(0, 0, 7);
         System.out.println(test.count);
     }
-    
+
 }
