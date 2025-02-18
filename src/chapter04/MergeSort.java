@@ -45,8 +45,8 @@ public class MergeSort {
 
 	/**
 	 * 
-	 * @param a[] A[0] <= A[1] <= A[2]********* <= A[n-2] <= A[n-1]
-	 * @param b[] B[0] <= B[1] <= B[2]********* <= B[n-2] <= B[n-1]
+	 * @param a A[0] <= A[1] <= A[2]********* <= A[n-2] <= A[n-1]
+	 * @param b B[0] <= B[1] <= B[2]********* <= B[n-2] <= B[n-1]
 	 * @return c[] C[0] <= C[1] <= C[2]********* <= C[n-2] <= C[n-1] a、b的所有元素组成了c的所有元素
 	 */
 	public static int[] merge1(int[] a , int[] b) {
@@ -105,7 +105,7 @@ public class MergeSort {
 	/**
 	 * 
 	 * 要求 start <= middle < end(至少有两个数组才行)
-	 * @param a[]
+	 * @param a
 	 * @param start 起始下标
 	 * @param middle 中间下标
 	 * @param end 结束下标
@@ -159,7 +159,7 @@ public class MergeSort {
 
 	/**
 	 * 
-	 * @param a[]
+	 * @param a
 	 * @param start 起始下标
 	 * @param end 结束下标
 	 * @return a[] A[0] <= A[1] <= A[2]********* <= A[n-2] <= A[n-1]
