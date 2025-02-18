@@ -2,4 +2,7 @@ bin/
 .classpath
 .project
 .settings/org.eclipse.core.resources.prefs
+/out
+.idea
+*.iml
 
