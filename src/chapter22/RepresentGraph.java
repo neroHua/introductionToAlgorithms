@@ -1,5 +1,7 @@
 package chapter22;
 
+import java.util.LinkedList;
+
 /**
  * 
  * 如何在计算机中装载一个图
@@ -26,5 +28,71 @@ package chapter22;
  *
  */
 public class RepresentGraph {
+
+    public static void main(String[] args) {
+        Vertex[] graphList = buildAdjacencyListRepresentGraph();
+        int[][] graphMatrix = buildMatrixRepresentGraph();
+
+        System.out.println(graphList[0]);
+    }
+
+    private static Vertex[] buildAdjacencyListRepresentGraph() {
+        Vertex vertex0 = new Vertex(0, "1", new LinkedList<>(), null, -1, null, -1);
+        Vertex vertex1 = new Vertex(0, "1", new LinkedList<>(), null, -1, null, -1);
+        Vertex vertex2 = new Vertex(0, "1", new LinkedList<>(), null, -1, null, -1);
+        Vertex vertex3 = new Vertex(0, "1", new LinkedList<>(), null, -1, null, -1);
+        Vertex vertex4 = new Vertex(0, "1", new LinkedList<>(), null, -1, null, -1);
+
+        vertex0.adjacencyList.add(vertex1);
+        vertex0.adjacencyList.add(vertex4);
+
+        vertex1.adjacencyList.add(vertex0);
+        vertex1.adjacencyList.add(vertex2);
+        vertex1.adjacencyList.add(vertex3);
+        vertex1.adjacencyList.add(vertex4);
+
+        vertex2.adjacencyList.add(vertex1);
+        vertex2.adjacencyList.add(vertex3);
+
+        vertex3.adjacencyList.add(vertex1);
+        vertex3.adjacencyList.add(vertex2);
+        vertex3.adjacencyList.add(vertex4);
+
+        vertex4.adjacencyList.add(vertex0);
+        vertex4.adjacencyList.add(vertex1);
+        vertex4.adjacencyList.add(vertex3);
+
+        Vertex[] graphList = new Vertex[5];
+        graphList[0] = vertex0;
+        graphList[1] = vertex1;
+        graphList[2] = vertex2;
+        graphList[3] = vertex3;
+        graphList[4] = vertex4;
+        return graphList;
+    }
+
+    private static int[][] buildMatrixRepresentGraph() {
+        int[][] graphMatrix = new int[5][5];
+        graphMatrix[0][1] = 1;
+        graphMatrix[0][4] = 1;
+
+        graphMatrix[1][0] = 1;
+        graphMatrix[1][2] = 1;
+        graphMatrix[1][3] = 1;
+        graphMatrix[1][4] = 1;
+
+        graphMatrix[2][1] = 1;
+        graphMatrix[2][3] = 1;
+
+        graphMatrix[3][1] = 1;
+        graphMatrix[3][2] = 1;
+        graphMatrix[3][4] = 1;
+
+        graphMatrix[4][0] = 1;
+        graphMatrix[4][1] = 1;
+        graphMatrix[4][3] = 1;
+
+        return graphMatrix;
+    }
 
 }
