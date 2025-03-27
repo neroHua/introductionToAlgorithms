@@ -171,14 +171,13 @@ public class DFS {
         return graphT;
     }
 
-    private static void DFST(Vertex[] graphT, LinkedList<Vertex> dfsSort) {
+    private static LinkedList<LinkedList<Vertex>> DFST(Vertex[] graphT, LinkedList<Vertex> dfsSort) {
         for (int i = 0; i < graphT.length; i++) {
             graphT[i].color = Color.WHITE;
             graphT[i].predecessor = null;
         }
 
         int time = 0;
-
         LinkedList<LinkedList<Vertex>> strongConnectVertexList = new LinkedList<>();
         for (int i = 0; i < dfsSort.size(); i++) {
             if (graphT[dfsSort.get(i).index].color == Color.WHITE) {
@@ -188,7 +187,7 @@ public class DFS {
             }
         }
 
-        printStrongConnectVertex(strongConnectVertexList);
+        return strongConnectVertexList;
     }
 
 
@@ -233,7 +232,9 @@ public class DFS {
 
         Vertex[] graphT = buildGraphT(graph);
 
-        DFST(graphT, dfsSort);
+        LinkedList<LinkedList<Vertex>> strongConnectVertexList = DFST(graphT, dfsSort);
+
+        printStrongConnectVertex(strongConnectVertexList);
     }
 
 
