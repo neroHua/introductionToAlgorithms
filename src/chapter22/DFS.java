@@ -147,6 +147,6 @@ public class DFS {
 
         DFS(graph);
 
-        printAllPath(graph, graph[1]);
+        printAllPath(graph, graph[0]);
     }
 }
